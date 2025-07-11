@@ -11,7 +11,7 @@ const ME = gql`
       profile {
         firstName
         lastName
-        avatar
+        avatarUrl
       }
     }
   }

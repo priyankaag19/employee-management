@@ -1,3 +1,5 @@
+// 1. Fix in typeDefs.js - Update the Employee type to include missing fields
+
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
@@ -41,7 +43,7 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     phone: String
-    avatar: String
+    avatarUrl: String
     createdAt: DateTime!
     updatedAt: DateTime!
   }
@@ -51,6 +53,7 @@ const typeDefs = gql`
     employeeId: String!
     firstName: String!
     lastName: String!
+    name: String!      # Add this computed field
     email: String!
     phone: String
     dateOfBirth: DateTime
@@ -76,7 +79,7 @@ const typeDefs = gql`
     education: String
     certifications: [String!]!
     performanceRating: Float
-    avatar: String
+    avatarUrl: String  # Make sure this field exists
     createdAt: DateTime!
     updatedAt: DateTime!
   }
@@ -112,12 +115,12 @@ const typeDefs = gql`
   }
 
   type PaginationInfo {
-  totalItems: Int!
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  currentPage: Int!
-  totalPages: Int!
-}
+    totalItems: Int!
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    currentPage: Int!
+    totalPages: Int!
+  }
 
   type BulkOperationResult {
     success: Boolean!
@@ -152,10 +155,11 @@ const typeDefs = gql`
     education: String
     certifications: [String!] = []
     performanceRating: Float
-    avatar: String
+    avatarUrl: String  
   }
 
   input EmployeeUpdateInput {
+    employeeId: String  # Add this field
     firstName: String
     lastName: String
     email: String
@@ -165,6 +169,7 @@ const typeDefs = gql`
     department: String
     position: String
     salary: Float
+    hireDate: DateTime  # Add this field
     managerId: ID
     status: EmployeeStatus
     address: String
@@ -179,7 +184,7 @@ const typeDefs = gql`
     education: String
     certifications: [String!]
     performanceRating: Float
-    avatar: String
+    avatarUrl: String 
   }
 
   input BulkUpdateInput {
@@ -190,15 +195,17 @@ const typeDefs = gql`
   input RegisterInput {
     email: String!
     password: String!
+    firstName: String!  # Add these fields to match your resolver
+    lastName: String!
+    phone: String
     role: Role = EMPLOYEE
-    profile: UserProfileInput!
   }
 
   input UserProfileInput {
     firstName: String!
     lastName: String!
     phone: String
-    avatar: String
+    avatarUrl: String
   }
 
   input LoginInput {
@@ -207,27 +214,27 @@ const typeDefs = gql`
   }
 
   input EmployeeFilters {
-  search: String
-  department: String
-  position: String
-  status: EmployeeStatus
-  managerId: ID
-  gender: Gender
-  minAge: Int
-  maxAge: Int
-  minSalary: Float
-  maxSalary: Float
-  hiredAfter: DateTime
-  hiredBefore: DateTime
-  city: String
-  state: String
-  country: String
-  hasManager: Boolean
-  skills: [String!]
-  minExperience: Int
-  maxExperience: Int
-  performanceRating: Float
-}
+    search: String
+    department: String
+    position: String
+    status: EmployeeStatus
+    managerId: ID
+    gender: Gender
+    minAge: Int
+    maxAge: Int
+    minSalary: Float
+    maxSalary: Float
+    hiredAfter: DateTime
+    hiredBefore: DateTime
+    city: String
+    state: String
+    country: String
+    hasManager: Boolean
+    skills: [String!]
+    minExperience: Int
+    maxExperience: Int
+    performanceRating: Float
+  }
 
   type Query {
     # Employee queries
